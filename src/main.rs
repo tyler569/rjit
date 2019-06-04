@@ -352,3 +352,23 @@ fn test_emit_fib() {
 
     assert!(c.buf == wanted_code);
 }
+
+#[test]
+fn test_execute_buffer() {
+    let mut c = Code::new();
+
+    c.mov_imm32(RAX, 10);
+    c.ret();
+
+    let exec =
+        MemoryMap::new(c.buf.len(), &[MapReadable, MapWritable, MapExecutable])
+            .unwrap();
+
+    let func = unsafe {
+        ptr::copy(c.buf.as_ptr(), exec.data(), c.buf.len());
+        transmute::<_, fn() -> usize>(exec.data())
+    };
+
+    assert!(func() == 10);
+}
+
