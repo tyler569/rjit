@@ -5,4 +5,4 @@ authors = ["Tyler Philbrick <t5j6p9@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-mmap = "*"
+mmap = { git = "https://github.com/retep998/rust-mmap" }
